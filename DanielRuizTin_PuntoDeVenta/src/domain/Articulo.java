@@ -127,11 +127,12 @@ public class Articulo {
     }
     
     public double getDescuentoM(){
-        return 1.00 + this.descuento / 100.0;
+        return this.descuento / 100.0;
     }
     
-    public double getPrecioConDescuento(){                        
-        return this.getPrecio() * this.getDescuentoM();
+    public double getPrecioConDescuento(){
+        double substraer = 100.0; // this.getPrecio() * this.getDescuentoM();
+        return this.getPrecio() - substraer ;
     }
     
 }

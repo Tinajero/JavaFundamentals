@@ -64,12 +64,7 @@ public class Main {
         
         System.out.println("\t".length());
         
-        ticket.display();
-        
-        
-        
-    
-        
+        ticket.display();                                    
     }
     
 }
