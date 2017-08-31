@@ -14,7 +14,7 @@ public class Articulo {
     private int codigo;
     private String descripcion;
     private double precio;  
-    private double descuento;
+    private double descuento;    
     final int MAX_LENGTH_DESCRIPCION = 255;
     final String DEFAULT_DESCRIPTION = "DESCRIPCION";
     final int LAST_CODIGO = 8564;
@@ -131,7 +131,7 @@ public class Articulo {
     }
     
     public double getPrecioConDescuento(){
-        double substraer = 100.0; // this.getPrecio() * this.getDescuentoM();
+        double substraer =  this.getPrecio() * this.getDescuentoM();
         return this.getPrecio() - substraer ;
     }
     

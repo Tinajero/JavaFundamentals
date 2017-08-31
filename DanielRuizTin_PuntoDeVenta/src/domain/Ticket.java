@@ -12,17 +12,20 @@ import java.util.Calendar;
  * @author Grupo Salinas 170828
  */
 public class Ticket {
+    private int numeroTicket;
     private Tienda tienda;
     private Carrito carritoDeCompras;
-    private Cliente cliente;
+  
     private Calendar diaDeLaCompra;
-    private int anchoDelTicket;
+    private int anchoDelTicket = 40;
     private int longitudDescripcion;
+    private double impuesto;
     
-    public Ticket(Tienda tienda, Carrito carrito, Cliente cliente){
+    
+    public Ticket(Tienda tienda, Carrito carrito){
+        this.numeroTicket++;
         setTienda(tienda);
-        setCarritoDeCompras(carrito);
-        setCliente(cliente);        
+        setCarritoDeCompras(carrito);        
     }
     
     
@@ -31,6 +34,8 @@ public class Ticket {
         int longitudPrecio = String.format("%.2f", carritoDeCompras.getPrecioMaximo()).length();
         
         sb.append(centrar("TICKET", anchoDelTicket));
+        sb.append("\n");
+         sb.append(centrar("N° " + numeroTicket , anchoDelTicket));
         sb.append("\n");
         sb.append(centrar(tienda.getNombre(), anchoDelTicket));
         sb.append("\n");
@@ -71,11 +76,15 @@ public class Ticket {
         for (int  i = 0; i < anchoDelTicket; i++){
             sb.append("-");
         }
+        sb.append("\n");        
+        sb.append("IVA");
+        int longitudIva = this.anchoDelTicket - "IVA".length(); 
+        double iva = carritoDeCompras.getTotal() * this.getImpuesto();
+        sb.append(String.format("%"+longitudIva+".2f", iva));
         sb.append("\n");
-        
         sb.append("TOTAL");
-        int longitudTotal = this.anchoDelTicket - "TOTAL".length();
-        sb.append(String.format("%"+ longitudTotal +".2f", carritoDeCompras.getTotal()));
+        int longitudTotal = this.anchoDelTicket - "TOTAL".length();        
+        sb.append(String.format("%"+ longitudTotal +".2f", carritoDeCompras.getTotal() + iva));
         sb.append("\n");
         
         System.out.println( sb.toString());
@@ -97,14 +106,6 @@ public class Ticket {
         this.carritoDeCompras = carritoDeCompras;
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
     public Calendar getDiaDeLaCompra() {
         return diaDeLaCompra;
     }
@@ -113,7 +114,11 @@ public class Ticket {
         this.diaDeLaCompra = diaDeLaCompra;
     }                
     
-    public String centrar(String s, int anchura){        
+    public String centrar(String s, int anchura){      
+        if (s == null){
+            s = "   ";
+        }
+        
         int mitad = anchura /2;
         int mitadString = s.length()/2;
         StringBuilder sb = new StringBuilder();
@@ -150,6 +155,17 @@ public class Ticket {
     public void setLongitudDescripcion(int longitudDescripcion) {
         this.longitudDescripcion = longitudDescripcion;
     }
-    
+
+    public double getImpuesto() {
+        return impuesto;
+    }
+
+    public void setImpuesto(double impuesto) {
+        this.impuesto = impuesto;
+    }
+
+    public int getNumeroTicket() {
+        return numeroTicket;
+    }  
     
 }

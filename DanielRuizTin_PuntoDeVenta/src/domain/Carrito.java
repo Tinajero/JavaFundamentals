@@ -17,6 +17,10 @@ public class Carrito {
    private double total = 0.0;
    private double precioMaximo =  -1.0;
 
+   public Carrito(){
+       
+   }
+   
    public Carrito(Articulo[] articulos){
        
        for (Articulo articulo: articulos){
