@@ -5,14 +5,16 @@
  */
 package domain;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Grupo Salinas 170828
  */
 public class Carrito {
     
-   private Articulo [] articulos ;   
-   private int numeroArticulos = 0;
+    //TODO cambiar a auna linkedList para lo del eliminar
+   private ArrayList<Articulo> articulos ;     
    private final int NUMERO_ARTICULOS_MAX = 100;
    private double total = 0.0;
    private double precioMaximo =  -1.0;
@@ -29,27 +31,20 @@ public class Carrito {
        
    }
    
-    public Articulo[] getArticulos() {
+    public ArrayList<Articulo> getArticulos() {
         return articulos;
     }
 
-    public void setArticulos(Articulo[] articulos) {
+    public void setArticulos(ArrayList<Articulo> articulos) {
         this.articulos = articulos;
     }   
     
     public void agregarArticulo(Articulo articulo){
         
-        if(articulos == null || numeroArticulos == 0){
-            articulos = new Articulo[NUMERO_ARTICULOS_MAX];                                    
-        }        
-        
-        if (numeroArticulos == NUMERO_ARTICULOS_MAX){
-            System.out.println("YA NO LE CABEN MAS ARTICULOS A ESTE CARRITO, TOME OTRO PORFAVOR");
-            return;
-        }
-        
-        articulos[numeroArticulos++] = new Articulo(articulo);
-        
+        if(articulos == null){
+           articulos = new ArrayList<>();                                  
+        }                               
+        articulos.add(articulo);        
         total += articulo.getPrecioConDescuento();        
         // esto se utilizara para obtener las columnas a la derecha del precio.
         precioMaximo = precioMaximo < articulo.getPrecio() ? articulo.getPrecio():precioMaximo;        
@@ -57,25 +52,24 @@ public class Carrito {
     
     public void eliminarArticulo(int indice){
         
-        if (indice < 0 || indice >= numeroArticulos){
+        if (indice < 0 || indice >= articulos.size()){
             System.out.println("Ese articulo no existe");
             return;
         }
                    
-        total -= articulos[indice].getPrecioConDescuento();
+        total -= articulos.get(indice).getPrecioConDescuento();
         
-        for (int i = indice; i <= numeroArticulos; i++ ){
-            articulos[i] = articulos[i+1];
-        }
+//        for (int i = indice; i <= numeroArticulos; i++ ){
+//            articulos[i] = articulos[i+1];
+//        }
+
+        articulos.remove(indice);
         
-        numeroArticulos--;
-        
-        
-        
+                          
     }
 
     public int getNumeroArticulos() {
-        return numeroArticulos;
+        return articulos == null ? 0:articulos.size();
     }
 
     public double getTotal() {
@@ -84,6 +78,17 @@ public class Carrito {
 
     public double getPrecioMaximo() {
         return precioMaximo;
+    }
+    
+    public String display(int longitudDescripcion){
+        StringBuilder sb = new StringBuilder();
+        
+        int longitudPrecio = String.format("%.2f", this.precioMaximo).length();
+        
+        for (int i = 0; i < this.articulos.size(); i++){
+            sb.append(i).append(" ").append(this.articulos.get(i).display( longitudDescripcion, longitudPrecio)).append("\n");
+        }
+        return sb.toString();
     }
     
     

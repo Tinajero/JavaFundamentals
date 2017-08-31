@@ -70,7 +70,7 @@ public class Ticket {
         
         
         for (int i = 0; i < carritoDeCompras.getNumeroArticulos(); i++){
-            sb.append(carritoDeCompras.getArticulos()[i].display(this.longitudDescripcion, longitudPrecio)).append("\n");
+            sb.append(carritoDeCompras.getArticulos().get(i).display(this.longitudDescripcion, longitudPrecio)).append("\n");
         }
         
         for (int  i = 0; i < anchoDelTicket; i++){

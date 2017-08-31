@@ -5,10 +5,10 @@
  */
 package main;
 
+
 import domain.Articulo;
 import domain.Carrito;
 import domain.Ticket;
-import domain.Cliente;
 import domain.Tienda;
 import java.util.Scanner;
 /**
@@ -51,6 +51,7 @@ public class Main {
     private static int opcionMenu;
     private static Articulo[] listaArticulos = new Articulo[nombreProductos.length];
     private static Carrito carrito;
+    
     private static Tienda tienda;
     
     public static void main(String[] args) {
@@ -84,7 +85,7 @@ public class Main {
     public static void desplegarMenu(){
         
         StringBuilder sb = new StringBuilder();
-         sb.append("====================================").append("\n");
+        sb.append("====================================").append("\n");
         sb.append("Bienvenido, seleccione una opcion").append("\n");
         sb.append("1) Agregar articulo al carrito").append("\n");
         sb.append("2) Eliminar articulo del carrito").append("\n");
@@ -101,10 +102,21 @@ public class Main {
     }
     
     private static int leerOpcion() {
-        int opcion;
+        String opcion;
         Scanner sc = new Scanner(System.in);
-        opcion = sc.nextInt();        
-        return opcion;
+        opcion = sc.nextLine(); 
+        
+        boolean isNumeric = opcion.chars().allMatch( Character::isDigit );
+        
+        if (!isNumeric){
+            System.out.println("Opcion Incorreta");
+            return leerOpcion();
+        } else {
+            return Integer.parseInt(opcion);
+        }
+
+        
+
     }
     
 
@@ -116,7 +128,8 @@ public class Main {
                     break;
             case 1: agregarArticulo();
                     break;
-            case 2: break;
+            case 2: eliminarArticulo();
+                    break;
             case 3: imprimirTicket(); break;
             case 4: break;
             case 11: Configuracion();
@@ -126,8 +139,11 @@ public class Main {
                    break;
         }
         
-        if (!salir)
+        if (!salir){
             start();
+        } else {
+            System.exit(0);
+        }
     }
     
     public static void agregarArticulo(){
@@ -188,6 +204,22 @@ public class Main {
         String nombre = in.nextLine();
         
         tienda.setNombre(nombre);
+        
+    }
+    
+    public static void eliminarArticulo(){
+        
+        System.out.println("Articulos en su carrito de compras");
+        System.out.println(carrito.display(40));
+        System.out.println("¿Que articulo desea eliminar?");
+        int indiceEliminar = leerOpcion();
+        if (indiceEliminar >= 0 && indiceEliminar < carrito.getNumeroArticulos()){
+            carrito.eliminarArticulo(indiceEliminar);            
+        } else {
+            System.out.println("Opcion incorrecta.");
+        }
+        
+        start();
         
     }
     
