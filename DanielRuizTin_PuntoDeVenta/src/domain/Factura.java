@@ -9,7 +9,7 @@ package domain;
  *
  * @author Grupo Salinas 170828
  */
-public class Factura {
+public class Factura implements GeneradorFactura, Displayable{
     
     final static int anchoFactura = 70;
     
@@ -21,10 +21,20 @@ public class Factura {
         
     }
     
+    
+    
     public Factura(Ticket ticket, Cliente cliente, Tienda tienda){
         setTicket(ticket);
         setCliente(cliente);
         setTienda(tienda);
+    }
+    
+    @Override
+    public void generarFactura(Ticket ticket, Cliente cliente, Tienda tienda){
+        setTicket(ticket);
+        setCliente(cliente);
+        setTienda(tienda);
+        this.display();
     }
 
     public String display(){

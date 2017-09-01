@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Grupo Salinas 170828
  */
-public class Carrito {
+public class Carrito implements Displayable{
     
     //TODO cambiar a auna linkedList para lo del eliminar
    private ArrayList<Articulo> articulos ;     
@@ -80,12 +80,29 @@ public class Carrito {
         return precioMaximo;
     }
     
+    public String display(){
+        StringBuilder sb = new StringBuilder();
+        
+        int longitudPrecio = String.format("%.2f", this.precioMaximo).length();
+        if (getNumeroArticulos() == 0){
+            sb.append("No Existen articulos en tu carrito aun.");
+        }
+        
+        for (int i = 0; i < this.articulos.size(); i++){
+            sb.append(i).append(" ").append(this.articulos.get(i).display()).append("\n");
+        }
+        return sb.toString();
+    }
+    
     public String display(int longitudDescripcion){
         StringBuilder sb = new StringBuilder();
         
         int longitudPrecio = String.format("%.2f", this.precioMaximo).length();
+         if (getNumeroArticulos() == 0){
+            sb.append("No Existen articulos en tu carrito aun.");
+        }
         
-        for (int i = 0; i < this.articulos.size(); i++){
+        for (int i = 0; i < getNumeroArticulos(); i++){
             sb.append(i).append(" ").append(this.articulos.get(i).display( longitudDescripcion, longitudPrecio)).append("\n");
         }
         return sb.toString();

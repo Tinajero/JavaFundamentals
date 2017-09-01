@@ -13,7 +13,7 @@ import java.util.Calendar;
  *
  * @author Grupo Salinas 170828
  */
-public class Ticket {
+public class Ticket implements Displayable {
     static private int contadorTicket = 1;
     private int numeroTicket = 0;
     private Tienda tienda;
@@ -34,12 +34,9 @@ public class Ticket {
         setCarritoDeCompras(carrito);        
         fechaHora = LocalDateTime.now();
     }
-    
-    
-    public void display(){
-        StringBuilder sb = new StringBuilder();
         
-        
+    public String display(){
+        StringBuilder sb = new StringBuilder();                
         sb.append(centrar("TICKET", anchoDelTicket));
         sb.append("\n");
          sb.append(centrar("N° " + numeroTicket , anchoDelTicket));
@@ -64,7 +61,7 @@ public class Ticket {
         }
         
         sb.append(imprimirTabla(anchoDelTicket));          
-        System.out.println( sb.toString());
+        return sb.toString();
     }
     
     public String imprimirTabla(int anchoImpresion){
@@ -73,9 +70,9 @@ public class Ticket {
         longitudDescripcion = anchoImpresion - (longitudPrecio*2 + 22);        
         
         sb.append("\n");
-        sb.append("CODIGO");
+        sb.append("CÓDIGO");
         sb.append("\t");
-        sb.append(String.format("%-" + longitudDescripcion + "s", "DESCRIPCION"));
+        sb.append(String.format("%-" + longitudDescripcion + "s", "DESCRIPCIÓN"));
         sb.append(" ");
         sb.append( String.format(" %"+4+"s","DESC." ));
         sb.append("   ");        
@@ -111,30 +108,6 @@ public class Ticket {
         return sb.toString();
         
     }
-
-    public Tienda getTienda() {
-        return tienda;
-    }
-
-    public void setTienda(Tienda tienda) {
-        this.tienda = tienda;
-    }
-
-    public Carrito getCarritoDeCompras() {
-        return carritoDeCompras;
-    }
-
-    public void setCarritoDeCompras(Carrito carritoDeCompras) {
-        this.carritoDeCompras = carritoDeCompras;
-    }
-
-    public Calendar getDiaDeLaCompra() {
-        return diaDeLaCompra;
-    }
-
-    public void setDiaDeLaCompra(Calendar diaDeLaCompra) {
-        this.diaDeLaCompra = diaDeLaCompra;
-    }                
     
     public String centrar(String s, int anchura){      
         if (s == null){
@@ -161,6 +134,31 @@ public class Ticket {
         }                                
         return sb.toString();
     }
+
+    public Tienda getTienda() {
+        return tienda;
+    }
+
+    public void setTienda(Tienda tienda) {
+        this.tienda = tienda;
+    }
+
+    public Carrito getCarritoDeCompras() {
+        return carritoDeCompras;
+    }
+
+    public void setCarritoDeCompras(Carrito carritoDeCompras) {
+        this.carritoDeCompras = carritoDeCompras;
+    }
+
+    public Calendar getDiaDeLaCompra() {
+        return diaDeLaCompra;
+    }
+
+    public void setDiaDeLaCompra(Calendar diaDeLaCompra) {
+        this.diaDeLaCompra = diaDeLaCompra;
+    }                
+    
 
     public int getAnchoDelTicket() {
         return anchoDelTicket;

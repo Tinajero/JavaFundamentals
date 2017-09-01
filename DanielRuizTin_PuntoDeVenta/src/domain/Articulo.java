@@ -9,7 +9,7 @@ package domain;
  *
  * @author Daniel Miguel Ruiz Tinajero
  */
-public class Articulo {
+public class Articulo implements Displayable{
     
     private int codigo;
     private String descripcion;

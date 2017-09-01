@@ -9,13 +9,25 @@ package domain;
  *
  * @author Grupo Salinas 170828
  */
-public class Tienda {
+public class Tienda implements Displayable{
     
     private int numero;
     private String nombre;
     private String domicilio;
     private String telefono;
     private String registroFederalontribuyentes;
+    
+    
+    @Override
+    public String display(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Numero: ").append(numero).append("\n");
+        sb.append("Numero: ").append(nombre).append("\n");
+        sb.append("Numero: ").append(domicilio).append("\n");
+        sb.append("Numero: ").append(telefono).append("\n");
+        sb.append("Numero: ").append(registroFederalontribuyentes).append("\n");
+        return sb.toString();
+    }
 
     public int getNumero() {
         return numero;

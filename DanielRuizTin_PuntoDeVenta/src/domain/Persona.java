@@ -9,15 +9,18 @@ package domain;
  *
  * @author Grupo Salinas 170828
  */
-public abstract class Persona {
+public abstract class Persona implements Displayable {
     
     private int numero;
     private String nombre;
     private String domicilio;
     
-    public void display(){
-        System.out.println("Nombre: " + nombre);
-        System.out.println("Domicilio: " + domicilio);
+    @Override
+    public String display(){
+       StringBuilder sb = new StringBuilder();
+       sb.append("Nombre: ").append(nombre).append("\n");
+       sb.append("Domicilio: ").append(domicilio).append("\n");
+       return sb.toString();
     }
 
     public int getNumero() {

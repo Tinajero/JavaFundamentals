@@ -15,14 +15,14 @@ import domain.Tienda;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.Set;
+import utils.ValidatorPDV;
 /**
  *
  * @author Daniel M. Ruiz Tinajero
  */
 public class Main {
 
-   private static String[] nombreProductos = {"Aceite (1-2-3)",
+   private final static String[] NOMBRE_PRODUCTOS = {"Aceite (1-2-3)",
                 "Alimento para bebé Gerber Etapa 1",
                 "Atún en Aceite Dolores o Nair (140 Grs)",
                 "Azúcar",
@@ -37,7 +37,7 @@ public class Main {
                 "Haba (500Grs)",
                 "Lenteja Verde Valle (500 Grs)"};
   
-    private static double[] precioProductos = {
+    private final static double[] PRECIO_PRODUCTOS = {
         22.24,
         9.41,
         13.63,
@@ -53,7 +53,6 @@ public class Main {
         37.6,
         30.02  };
     
-    private  int opcionMenu;
     private  ArrayList<Articulo> listaArticulos;
     private  Carrito carrito;
     private  HashMap<Integer,Ticket> tickets;
@@ -69,25 +68,27 @@ public class Main {
     }
     
     public void inicializar(){
-         int numeroArticulos = nombreProductos.length;
-       listaArticulos = new ArrayList<>();
+        int numeroArticulos = NOMBRE_PRODUCTOS.length;
+        listaArticulos = new ArrayList<>();
         carrito = new Carrito();
         tienda = new Tienda();
         tienda.setNombre("OXXO S.A de C.V");
         tienda.setDomicilio("Insurgentes Sur 3195, Tlalpan");
         tienda.setTelefono("01 55 5666 8548");
         tienda.setRegistroFederalontribuyentes("CCO8605231N4");
-        tickets = new HashMap< Integer, Ticket>();
+        tickets = new HashMap<>();
         clientes = new HashMap<>();
         maximoPrecio = 0.0;
          for(int i = 0; i < numeroArticulos; i++){
-            double precio = precioProductos[i];
-            String descripcion = nombreProductos[i];
+            double precio = PRECIO_PRODUCTOS[i];
+            String descripcion = NOMBRE_PRODUCTOS[i];
             int codigo = (int) (Math.random() * 700 + 1);
             double descuento = Math.random()*20.0;
             maximoPrecio = maximoPrecio < precio ? precio: maximoPrecio;         
             listaArticulos.add(new Articulo(codigo,descripcion, precio, descuento));
         }
+         
+        
     }
     
     public  void start(){
@@ -101,16 +102,16 @@ public class Main {
         
         StringBuilder sb = new StringBuilder();
         sb.append("====================================").append("\n");
-        sb.append("Bienvenido, seleccione una opcion").append("\n");
-        sb.append("1) Agregar articulo al carrito").append("\n");
-        sb.append("2) Eliminar articulo del carrito").append("\n");
+        sb.append("Bienvenido, seleccione una opción").append("\n");
+        sb.append("1) Agregar artículo al carrito").append("\n");
+        sb.append("2) Eliminar artículo del carrito").append("\n");
         sb.append("3) Realizar Pago").append("\n");
-        sb.append("4) consultar compra por numero de ticket").append("\n");
+        sb.append("4) Consultar compra por número de ticket").append("\n");
         sb.append("5) Darse de alta como cliente").append("\n");
         sb.append("6) Realizar consulta de cliente por RFC").append("\n");
         sb.append("7) Imprimir factura en pantalla").append("\n");
         sb.append("0) Salir").append("\n");
-        sb.append("11) Configuracion").append("\n");
+        sb.append("11) Configuración").append("\n");
         sb.append("====================================").append("\n");
         
         System.out.println(sb.toString());
@@ -129,7 +130,7 @@ public class Main {
         boolean isNumeric = opcion.chars().allMatch( Character::isDigit );
         
         if (!isNumeric){
-            System.out.println("Opcion Incorreta");
+            System.out.println("Opción Incorrecta");
             return leerOpcion();
         } else {
             return Integer.parseInt(opcion);
@@ -158,7 +159,7 @@ public class Main {
             case 11: Configuracion();
                     break;
             default:
-                   System.out.println("Opcion no valida");
+                   System.out.println("Opción no valida");
                    break;
         }
         
@@ -171,7 +172,7 @@ public class Main {
     
     public  void agregarArticulo(){
         
-        System.out.println("Articulos existentes");
+        System.out.println("Artículos existentes");
         int longitudDescripcion = 30;
         int longitudPrecio = String.format("%.2f", maximoPrecio).length();        
         
@@ -179,7 +180,7 @@ public class Main {
         sb.append("\n");
         sb.append("CODIGO");
         sb.append("\t");
-        sb.append(String.format("%-" + longitudDescripcion + "s", "DESCRIPCION"));
+        sb.append(String.format("%-" + longitudDescripcion + "s", "DESCRIPCIÓN"));
         sb.append(" ");
         sb.append( String.format(" %"+4+"s","DESC." ));
         sb.append("   ");        
@@ -199,7 +200,7 @@ public class Main {
             carrito.agregarArticulo(listaArticulos.get(seleccion));
             System.out.println("Agregado");
         } else {
-            System.out.println("Seleccion Invalida");
+            System.out.println("Selección Invalida");
             start();
         }
             
@@ -209,7 +210,7 @@ public class Main {
     }
     
     public  void Configuracion(){
-        System.out.println("1) Dar de alta articulos");
+        System.out.println("1) Dar de alta artículos");
         System.out.println("2) cambiar Datos de la Tienda");
         System.out.println("3) Regresar");
         
@@ -222,7 +223,7 @@ public class Main {
             case 3: start();
                     break;
             default: 
-                    System.out.println("Opcion de Configuracion Invalida");
+                    System.out.println("Opción de Configuración Invalida");
                     Configuracion();
                     break;                
         }                
@@ -246,7 +247,7 @@ public class Main {
         tickets.put(ticket.getNumeroTicket(), ticket);        
         ticket.setAnchoDelTicket(50);
                 
-        ticket.display();       
+        System.out.println(ticket.display());
         carrito = new Carrito();      
         start();
     }
@@ -254,24 +255,22 @@ public class Main {
     
     public  void eliminarArticulo(){
         
-        System.out.println("Articulos en su carrito de compras");
+        System.out.println("Artículos en su carrito de compras");
         System.out.println(carrito.display(40));
-        System.out.println("¿Que articulo desea eliminar?");
+        System.out.println("¿Que artículo desea eliminar?");
         int indiceEliminar = leerOpcion();
         if (indiceEliminar >= 0 && indiceEliminar < carrito.getNumeroArticulos()){
             carrito.eliminarArticulo(indiceEliminar);            
         } else {
-            System.out.println("Opcion incorrecta.");
+            System.out.println("Opción incorrecta.");
         }
         
         start();
         
     }
     public  Ticket buscarTicket(){
-        Ticket ticket = null;
-        Scanner in = new Scanner(System.in); 
-        
-        System.out.println("Introducir numero de ticket");
+        Ticket ticket;    
+        System.out.println("Introducir número de ticket");
         int ticketNumero = leerOpcion();
         
         if (ticketNumero == 0){
@@ -280,7 +279,7 @@ public class Main {
         
         if (tickets.containsKey(ticketNumero)){                        
             ticket = tickets.get(ticketNumero);
-            ticket.display();             
+            System.out.println(ticket.display());
             return ticket;
         } else {
             System.out.println("No existe ese ticket");
@@ -290,12 +289,10 @@ public class Main {
     
     public  void darDeAltaCliente() {
         Scanner sc = new Scanner(System.in);
-        String cadena = "";
-        Cliente cliente = new Cliente();
-        
-        System.out.println("Nombre:");          
-        cadena = sc.nextLine();                
-        cliente.setNombre(cadena);
+        String cadena;
+        Cliente cliente = new Cliente();                           
+        cadena = ValidatorPDV.leerSoloLetras("Nombre: ");        
+        cliente.setNombre(cadena);        
         System.out.println("Domicilio:");
         cadena = sc.nextLine();                
         cliente.setDomicilio(cadena);
@@ -307,11 +304,11 @@ public class Main {
     
     public Cliente buscarClientePorRFC(){
         Cliente cliente;
-        Scanner sc = new Scanner(System.in);
-        String cadena = "";
+        Scanner sc = new Scanner(System.in);       
         
         System.out.println("Introducir RFC del cliente a buscar: ");
         
+        String cadena;
         cadena = sc.nextLine();
         if (cadena.isEmpty()){
             start();            
@@ -319,15 +316,12 @@ public class Main {
         
         if (clientes.containsKey(cadena)){            
             cliente = clientes.get(cadena);
-            cliente.display();
+            System.out.println(cliente.display());
             return cliente;
         } else {
             System.out.println("No existe ese Cliente");
             return buscarClientePorRFC();
-        }
-        
-        
-        
+        }                        
     }
     
         
@@ -336,17 +330,17 @@ public class Main {
         int codigo;
         String descripcion;
         double precio, descuento;
-        String cadena = "";
-        Cliente cliente = new Cliente();
-        
-        System.out.println("Codigo:");          
+        String cadena ;
+     
+        System.out.println("Código:");          
         codigo = sc.nextInt();      
-        cadena = sc.nextLine();       
-        System.out.println("Descripcion:");
+        cadena = sc.nextLine();  // un buffer para leer el salto de linea despues del entero para la linea
+        //descripcion
+        System.out.println("Descripción:");
         descripcion = sc.nextLine();                        
         System.out.println("Precio:");
         precio = sc.nextDouble();                
-        System.out.println("descuento:");
+        System.out.println("Descuento:");
         descuento = sc.nextDouble();                                        
         listaArticulos.add(new Articulo(codigo, descripcion, precio, descuento));
         Configuracion();
@@ -359,16 +353,16 @@ public class Main {
         String telefono;
         String registroFederalontribuyentes;
                               
-        System.out.println("nombre:");
+        System.out.println("Nombre:");
         nombre = sc.nextLine();           
         tienda.setNombre(nombre);
-        System.out.println("domicilio:");
+        System.out.println("Domicilio:");
         domicilio = sc.nextLine();   
         tienda.setDomicilio(domicilio);
-        System.out.println("telefono:");
+        System.out.println("Telefono:");
         telefono =  sc.nextLine();      
         tienda.setTelefono(telefono);
-        System.out.println("registro Federal Contribuyentes:");
+        System.out.println("Registro Federal de Contribuyentes:");
         registroFederalontribuyentes = sc.nextLine();   
         tienda.setRegistroFederalontribuyentes(registroFederalontribuyentes);
         
@@ -378,12 +372,11 @@ public class Main {
      
      public void imprimirFactura(){
          
-         Ticket ticketFactura = buscarTicket();
-         Cliente clienteFactura = buscarClientePorRFC();
-         Factura factura = new Factura(ticketFactura, clienteFactura, tienda);
-         
-         System.out.println(factura.display());
-         
+        Ticket ticketFactura = buscarTicket();
+        Cliente clienteFactura = buscarClientePorRFC();
+        Factura factura = new Factura(ticketFactura, clienteFactura, tienda);
+        factura.generarFactura(ticketFactura, clienteFactura, tienda);
+//         GeneradorFactura facturacion = (ticketFactura, clienteFactura, tienda) -> {};                           
      }
     
     
