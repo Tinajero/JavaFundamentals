@@ -5,6 +5,9 @@
  */
 package domain;
 
+import Interfaces.GeneradorFactura;
+import Interfaces.Displayable;
+
 /**
  *
  * @author Grupo Salinas 170828
@@ -34,7 +37,7 @@ public class Factura implements GeneradorFactura, Displayable{
         setTicket(ticket);
         setCliente(cliente);
         setTienda(tienda);
-        this.display();
+        System.out.println(this.display());
     }
 
     public String display(){

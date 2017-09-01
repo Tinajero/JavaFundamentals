@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package Interfaces;
 
 /**
  *
  * @author Grupo Salinas 170828
  */
-public interface GeneradorFactura {
-    
-    public void generarFactura(Ticket ticket, Cliente cliente, Tienda tienda);
+public interface Displayable {
+    public String display();
 }

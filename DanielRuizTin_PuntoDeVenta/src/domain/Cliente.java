@@ -5,6 +5,8 @@
  */
 package domain;
 
+import Interfaces.Persona;
+
 /**
  *
  * @author Grupo Salinas 170828

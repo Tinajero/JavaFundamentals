@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package utils;
 
 /**
  *
  * @author Grupo Salinas 170828
  */
-public class PDVException extends Exception{
+public class PDVException extends NumberFormatException{
     
 }

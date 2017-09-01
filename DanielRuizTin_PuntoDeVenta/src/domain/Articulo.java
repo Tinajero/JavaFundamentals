@@ -5,6 +5,8 @@
  */
 package domain;
 
+import Interfaces.Displayable;
+
 /**
  *
  * @author Daniel Miguel Ruiz Tinajero

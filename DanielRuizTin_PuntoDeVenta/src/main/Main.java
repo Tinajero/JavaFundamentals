@@ -6,6 +6,7 @@
 package main;
 
 
+import Interfaces.GeneradorFactura;
 import domain.Articulo;
 import domain.Carrito;
 import domain.Cliente;
@@ -65,6 +66,9 @@ public class Main {
        Main m = new Main(); 
        m.inicializar();
        m.start();
+//        GeneradorFactura ff = f -> {};
+//        
+//      ff.generarFactura(f);
     }
     
     public void inicializar(){
@@ -105,7 +109,7 @@ public class Main {
         sb.append("Bienvenido, seleccione una opción").append("\n");
         sb.append("1) Agregar artículo al carrito").append("\n");
         sb.append("2) Eliminar artículo del carrito").append("\n");
-        sb.append("3) Realizar Pago").append("\n");
+        sb.append("3) Imprimir Ticket y guardarlo").append("\n");
         sb.append("4) Consultar compra por número de ticket").append("\n");
         sb.append("5) Darse de alta como cliente").append("\n");
         sb.append("6) Realizar consulta de cliente por RFC").append("\n");
@@ -124,9 +128,7 @@ public class Main {
         
         if (opcion.isEmpty()){
             start();
-        }
-            
-        
+        }                    
         boolean isNumeric = opcion.chars().allMatch( Character::isDigit );
         
         if (!isNumeric){
@@ -142,7 +144,6 @@ public class Main {
     
 
     private  void ejecutarAccion(int opcion) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         boolean salir = false;
         switch(opcion){
             case 0: salir = true;
@@ -333,15 +334,11 @@ public class Main {
         String cadena ;
      
         System.out.println("Código:");          
-        codigo = sc.nextInt();      
-        cadena = sc.nextLine();  // un buffer para leer el salto de linea despues del entero para la linea
-        //descripcion
+        codigo = leerOpcion();                     
         System.out.println("Descripción:");
         descripcion = sc.nextLine();                        
-        System.out.println("Precio:");
-        precio = sc.nextDouble();                
-        System.out.println("Descuento:");
-        descuento = sc.nextDouble();                                        
+        precio = ValidatorPDV.leerSoloDouble("Precio:");           
+        descuento = ValidatorPDV.leerSoloDouble("Descuento:");           
         listaArticulos.add(new Articulo(codigo, descripcion, precio, descuento));
         Configuracion();
     }           
@@ -364,18 +361,21 @@ public class Main {
         tienda.setTelefono(telefono);
         System.out.println("Registro Federal de Contribuyentes:");
         registroFederalontribuyentes = sc.nextLine();   
-        tienda.setRegistroFederalontribuyentes(registroFederalontribuyentes);
-        
-       
+        tienda.setRegistroFederalontribuyentes(registroFederalontribuyentes);               
         Configuracion();
     }           
      
-     public void imprimirFactura(){
-         
+     public void imprimirFactura(){         
         Ticket ticketFactura = buscarTicket();
         Cliente clienteFactura = buscarClientePorRFC();
-        Factura factura = new Factura(ticketFactura, clienteFactura, tienda);
-        factura.generarFactura(ticketFactura, clienteFactura, tienda);
+//        Factura factura = new Factura(ticketFactura, clienteFactura, tienda);
+        
+        GeneradorFactura ff = (tf, cf, tienda) -> { System.out.println(new Factura(tf, cf, tienda).display()); };
+        ff.generarFactura(ticketFactura, clienteFactura, tienda);
+        
+//        System.out.println(factura.display());
+        
+//        factura.generarFactura(ticketFactura, clienteFactura, tienda);
 //         GeneradorFactura facturacion = (ticketFactura, clienteFactura, tienda) -> {};                           
      }
     

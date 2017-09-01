@@ -5,6 +5,7 @@
  */
 package domain;
 
+import Interfaces.Displayable;
 import java.util.ArrayList;
 
 /**

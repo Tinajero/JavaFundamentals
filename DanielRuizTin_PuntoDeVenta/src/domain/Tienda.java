@@ -5,6 +5,8 @@
  */
 package domain;
 
+import Interfaces.Displayable;
+
 /**
  *
  * @author Grupo Salinas 170828
