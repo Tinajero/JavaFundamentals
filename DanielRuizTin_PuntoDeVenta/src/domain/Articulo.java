@@ -112,9 +112,10 @@ public class Articulo {
         sb.append("\t");
         sb.append(String.format("%-" + lengthDescripcion + "s", chop(descripcion,lengthDescripcion)));
 //        sb.append("\t");                                
-        sb.append( String.format("%7.2f",descuento)).append("%");
+        sb.append( String.format("%7.2f",descuento)).append(" ");
         sb.append("  ");
-        sb.append("$").append(String.format("%"+columnsOfPrice+".2f", precio) );
+        sb.append(" ").append(String.format("%"+columnsOfPrice+".2f", precio) );
+        sb.append("   ").append(String.format("%"+columnsOfPrice+".2f", getPrecioConDescuento()) );
         return sb.toString();
     }
     

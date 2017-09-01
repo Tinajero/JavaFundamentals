@@ -11,12 +11,41 @@ package domain;
  */
 public class Factura {
     
+    final static int anchoFactura = 70;
+    
     Ticket ticket;
     Cliente cliente;
     Tienda tienda;
+    
+    public Factura(){
+        
+    }
+    
+    public Factura(Ticket ticket, Cliente cliente, Tienda tienda){
+        setTicket(ticket);
+        setCliente(cliente);
+        setTienda(tienda);
+    }
 
     public String display(){
-        return "";
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append( String.format("%"+anchoFactura+"s", tienda.getRegistroFederalontribuyentes()));
+        sb.append("\n");
+        sb.append( String.format("%"+anchoFactura+"s", tienda.getNombre()));
+        sb.append("\n");
+        sb.append( String.format("%"+anchoFactura+"s", tienda.getDomicilio()));
+        sb.append("\n");
+        sb.append( String.format("%"+anchoFactura+"s", tienda.getTelefono()));
+        sb.append("\n");sb.append("\n");sb.append("\n");
+        sb.append(cliente.getRegistroFederalContribuyentes()).append("\n");
+        sb.append(cliente.getNombre()).append("\n");
+        sb.append(cliente.getDomicilio()).append("\n");
+        
+        sb.append(ticket.imprimirTabla(anchoFactura));
+//        for (int i = 0; i < sb)
+        
+        return sb.toString(); 
     }
     
     public Ticket getTicket() {

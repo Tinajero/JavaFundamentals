@@ -9,11 +9,13 @@ package main;
 import domain.Articulo;
 import domain.Carrito;
 import domain.Cliente;
+import domain.Factura;
 import domain.Ticket;
 import domain.Tienda;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 /**
  *
  * @author Daniel M. Ruiz Tinajero
@@ -58,6 +60,8 @@ public class Main {
     private  Tienda tienda;
     private  HashMap<String, Cliente> clientes;
     
+    private double maximoPrecio;
+    
     public static void main(String[] args) {                                      
        Main m = new Main(); 
        m.inicializar();
@@ -69,16 +73,19 @@ public class Main {
        listaArticulos = new ArrayList<>();
         carrito = new Carrito();
         tienda = new Tienda();
-        tienda.setNombre("Tienda");
-        tienda.setDomicilio("Domicilio");
-        tienda.setTelefono("Telefono");
+        tienda.setNombre("OXXO S.A de C.V");
+        tienda.setDomicilio("Insurgentes Sur 3195, Tlalpan");
+        tienda.setTelefono("01 55 5666 8548");
+        tienda.setRegistroFederalontribuyentes("CCO8605231N4");
         tickets = new HashMap< Integer, Ticket>();
         clientes = new HashMap<>();
+        maximoPrecio = 0.0;
          for(int i = 0; i < numeroArticulos; i++){
             double precio = precioProductos[i];
             String descripcion = nombreProductos[i];
             int codigo = (int) (Math.random() * 700 + 1);
             double descuento = Math.random()*20.0;
+            maximoPrecio = maximoPrecio < precio ? precio: maximoPrecio;         
             listaArticulos.add(new Articulo(codigo,descripcion, precio, descuento));
         }
     }
@@ -147,6 +154,7 @@ public class Main {
             case 4: buscarTicket(); break;
             case 5: darDeAltaCliente(); break;
             case 6: buscarClientePorRFC(); break;
+            case 7: imprimirFactura(); break;
             case 11: Configuracion();
                     break;
             default:
@@ -164,9 +172,25 @@ public class Main {
     public  void agregarArticulo(){
         
         System.out.println("Articulos existentes");
+        int longitudDescripcion = 30;
+        int longitudPrecio = String.format("%.2f", maximoPrecio).length();        
         
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        sb.append("CODIGO");
+        sb.append("\t");
+        sb.append(String.format("%-" + longitudDescripcion + "s", "DESCRIPCION"));
+        sb.append(" ");
+        sb.append( String.format(" %"+4+"s","DESC." ));
+        sb.append("   ");        
+        sb.append(String.format(" %"+(longitudPrecio)+"s","PRECIO")); 
+        sb.append("  ");   
+        sb.append(String.format(" %"+(longitudPrecio)+"s","TOTAL")); 
+        sb.append("\n");
+        
+        System.out.println(sb.toString());
         for(int i = 0; i < listaArticulos.size(); i++){
-            System.out.println(i + ") " + listaArticulos.get(i).display(30, 4));
+            System.out.println(i + ") " + listaArticulos.get(i).display(longitudDescripcion, longitudPrecio));
         }
         
         int seleccion = leerOpcion();
@@ -219,10 +243,11 @@ public class Main {
 //        } else if( dineroRecibido > ticket.getTotal()){
 //            System.out.printf("Pagado, Gracias por su compra, su cambio $%.2f", dineroRecibido - ticket.getTotal() );
 //        }                
-        tickets.put(ticket.getNumeroTicket(), ticket);                
+        tickets.put(ticket.getNumeroTicket(), ticket);        
+        ticket.setAnchoDelTicket(50);
+                
         ticket.display();       
-        carrito = new Carrito();
-        ticket = new Ticket(tienda, carrito);
+        carrito = new Carrito();      
         start();
     }
     
@@ -242,7 +267,8 @@ public class Main {
         start();
         
     }
-    public  void buscarTicket(){
+    public  Ticket buscarTicket(){
+        Ticket ticket = null;
         Scanner in = new Scanner(System.in); 
         
         System.out.println("Introducir numero de ticket");
@@ -252,15 +278,14 @@ public class Main {
             start();
         }
         
-        if (tickets.containsKey(ticketNumero)){            
-            tickets.get(ticketNumero).display();            
+        if (tickets.containsKey(ticketNumero)){                        
+            ticket = tickets.get(ticketNumero);
+            ticket.display();             
+            return ticket;
         } else {
             System.out.println("No existe ese ticket");
-            buscarTicket();
-        }
-        
-        
-        
+            return buscarTicket();
+        }                                
     }
     
     public  void darDeAltaCliente() {
@@ -280,8 +305,8 @@ public class Main {
         clientes.put(cadena,cliente);                        
     }                
     
-    public void buscarClientePorRFC(){
-        
+    public Cliente buscarClientePorRFC(){
+        Cliente cliente;
         Scanner sc = new Scanner(System.in);
         String cadena = "";
         
@@ -289,18 +314,19 @@ public class Main {
         
         cadena = sc.nextLine();
         if (cadena.isEmpty()){
-            buscarClientePorRFC();     
-            return;
+            start();            
         }
         
         if (clientes.containsKey(cadena)){            
-            clientes.get(cadena).display();         
+            cliente = clientes.get(cadena);
+            cliente.display();
+            return cliente;
         } else {
             System.out.println("No existe ese Cliente");
-            buscarClientePorRFC();
+            return buscarClientePorRFC();
         }
         
-        start();
+        
         
     }
     
@@ -349,6 +375,16 @@ public class Main {
        
         Configuracion();
     }           
+     
+     public void imprimirFactura(){
+         
+         Ticket ticketFactura = buscarTicket();
+         Cliente clienteFactura = buscarClientePorRFC();
+         Factura factura = new Factura(ticketFactura, clienteFactura, tienda);
+         
+         System.out.println(factura.display());
+         
+     }
     
     
 }

@@ -5,6 +5,8 @@
  */
 package domain;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 /**
@@ -16,6 +18,7 @@ public class Ticket {
     private int numeroTicket = 0;
     private Tienda tienda;
     private Carrito carritoDeCompras;
+    private LocalDateTime fechaHora;
   
     private Calendar diaDeLaCompra;
     private int anchoDelTicket = 40;
@@ -29,12 +32,13 @@ public class Ticket {
         this.numeroTicket = contadorTicket++;
         setTienda(tienda);
         setCarritoDeCompras(carrito);        
+        fechaHora = LocalDateTime.now();
     }
     
     
     public void display(){
         StringBuilder sb = new StringBuilder();
-        int longitudPrecio = String.format("%.2f", carritoDeCompras.getPrecioMaximo()).length();
+        
         
         sb.append(centrar("TICKET", anchoDelTicket));
         sb.append("\n");
@@ -48,49 +52,64 @@ public class Ticket {
         sb.append("\n");
         sb.append(centrar(tienda.getRegistroFederalontribuyentes(), anchoDelTicket));
         sb.append("\n");
+        sb.append("\n");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String fechahora = this.fechaHora.format(formatter);
+        sb.append(String.format("%"+anchoDelTicket+"s",fechahora));
+        sb.append("\n");
+        sb.append("\n");
         
         for (int  i = 0; i < anchoDelTicket; i++){
             sb.append("-");
         }
         
-        longitudDescripcion = anchoDelTicket - (longitudPrecio + 19);
+        sb.append(imprimirTabla(anchoDelTicket));          
+        System.out.println( sb.toString());
+    }
+    
+    public String imprimirTabla(int anchoImpresion){
+        StringBuilder sb = new StringBuilder();
+        int longitudPrecio = String.format("%.2f", carritoDeCompras.getPrecioMaximo()).length();
+        longitudDescripcion = anchoImpresion - (longitudPrecio*2 + 22);        
         
         sb.append("\n");
         sb.append("CODIGO");
         sb.append("\t");
         sb.append(String.format("%-" + longitudDescripcion + "s", "DESCRIPCION"));
         sb.append(" ");
-        sb.append( "DESC." );
+        sb.append( String.format(" %"+4+"s","DESC." ));
+        sb.append("   ");        
+        sb.append(String.format("%"+(longitudPrecio)+"s","PRECIO")); 
         sb.append("  ");        
-        sb.append("PRECIO UN");                
+        sb.append(String.format(" %"+(longitudPrecio)+"s","TOTAL")); 
         sb.append("\n");
         
-        for (int  i = 0; i < anchoDelTicket; i++){
+        for (int  i = 0; i < anchoImpresion; i++){
             sb.append("-");
         }
         sb.append("\n");
-        
-        
-        
+                        
         for (int i = 0; i < carritoDeCompras.getNumeroArticulos(); i++){
             sb.append(carritoDeCompras.getArticulos().get(i).display(this.longitudDescripcion, longitudPrecio)).append("\n");
         }
         
-        for (int  i = 0; i < anchoDelTicket; i++){
+        for (int  i = 0; i < anchoImpresion; i++){
             sb.append("-");
         }
         sb.append("\n");        
         sb.append("IVA");
-        int longitudIva = this.anchoDelTicket - "IVA".length(); 
+        int longitudIva = anchoImpresion - "IVA".length(); 
         double iva = this.getImpuesto();
-        sb.append(String.format("%"+longitudIva+".2f", iva));
+        String ivaS = "$" + String.format("%.2f", iva);
+        sb.append(String.format("%"+longitudIva+"s", ivaS));
         sb.append("\n");
         sb.append("TOTAL");
-        int longitudTotal = this.anchoDelTicket - "TOTAL".length();        
-        sb.append(String.format("%"+ longitudTotal +".2f", carritoDeCompras.getTotal() + iva));
+        int longitudTotal = anchoImpresion - "TOTAL".length();     
+        String total =  "$" + String.format("%.2f",carritoDeCompras.getTotal() + iva);
+        sb.append(String.format("%"+ longitudTotal +"s", total));
         sb.append("\n");
+        return sb.toString();
         
-        System.out.println( sb.toString());
     }
 
     public Tienda getTienda() {
