@@ -12,18 +12,21 @@ import java.util.Calendar;
  * @author Grupo Salinas 170828
  */
 public class Ticket {
-    private int numeroTicket;
+    static private int contadorTicket = 1;
+    private int numeroTicket = 0;
     private Tienda tienda;
     private Carrito carritoDeCompras;
   
     private Calendar diaDeLaCompra;
     private int anchoDelTicket = 40;
     private int longitudDescripcion;
-    private double impuesto;
+    private double dineroRecibido;
+    private double cambio;
+    final static private double IVA = 0.16;
     
     
     public Ticket(Tienda tienda, Carrito carrito){
-        this.numeroTicket++;
+        this.numeroTicket = contadorTicket++;
         setTienda(tienda);
         setCarritoDeCompras(carrito);        
     }
@@ -79,7 +82,7 @@ public class Ticket {
         sb.append("\n");        
         sb.append("IVA");
         int longitudIva = this.anchoDelTicket - "IVA".length(); 
-        double iva = carritoDeCompras.getTotal() * this.getImpuesto();
+        double iva = this.getImpuesto();
         sb.append(String.format("%"+longitudIva+".2f", iva));
         sb.append("\n");
         sb.append("TOTAL");
@@ -157,15 +160,33 @@ public class Ticket {
     }
 
     public double getImpuesto() {
-        return impuesto;
-    }
-
-    public void setImpuesto(double impuesto) {
-        this.impuesto = impuesto;
+        return carritoDeCompras.getTotal() * IVA;
     }
 
     public int getNumeroTicket() {
         return numeroTicket;
     }  
+    
+    public double getTotal(){
+        return this.carritoDeCompras.getTotal() + getImpuesto();
+    }
+
+    public double getDineroRecibido() {
+        return dineroRecibido;
+    }
+
+    public void setDineroRecibido(double dineroRecibido) {
+        this.dineroRecibido = dineroRecibido;
+    }
+
+    public double getCambio() {
+        return cambio;
+    }
+
+    public void setCambio(double cambio) {
+        this.cambio = cambio;
+    }
+    
+    
     
 }

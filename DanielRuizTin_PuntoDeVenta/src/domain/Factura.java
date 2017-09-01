@@ -11,5 +11,38 @@ package domain;
  */
 public class Factura {
     
+    Ticket ticket;
+    Cliente cliente;
+    Tienda tienda;
+
+    public String display(){
+        return "";
+    }
+    
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Tienda getTienda() {
+        return tienda;
+    }
+
+    public void setTienda(Tienda tienda) {
+        this.tienda = tienda;
+    }
+    
+    
     
 }

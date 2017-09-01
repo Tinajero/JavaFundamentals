@@ -12,12 +12,13 @@ package domain;
 public abstract class Persona {
     
     private int numero;
-    private String apellidoPaterno;
-    private String apellidoMaterno;
     private String nombre;
     private String domicilio;
     
-    public abstract String display();
+    public void display(){
+        System.out.println("Nombre: " + nombre);
+        System.out.println("Domicilio: " + domicilio);
+    }
 
     public int getNumero() {
         return numero;
@@ -25,22 +26,6 @@ public abstract class Persona {
 
     public void setNumero(int numero) {
         this.numero = numero;
-    }
-
-    public String getApellidoPaterno() {
-        return apellidoPaterno;
-    }
-
-    public void setApellidoPaterno(String apellidoPaterno) {
-        this.apellidoPaterno = apellidoPaterno;
-    }
-
-    public String getApellidoMaterno() {
-        return apellidoMaterno;
-    }
-
-    public void setApellidoMaterno(String apellidoMaterno) {
-        this.apellidoMaterno = apellidoMaterno;
     }
 
     public String getNombre() {

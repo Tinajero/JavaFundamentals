@@ -15,8 +15,9 @@ public class Cliente extends Persona {
     private String registroFederalContribuyentes;
 
     @Override
-    public String display(){
-        return "";
+    public void display(){
+        super.display();
+        System.out.println("RFC: " + registroFederalContribuyentes);        
     }
 
     public String getRegistroFederalContribuyentes() {
